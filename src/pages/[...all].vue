@@ -1,6 +1,11 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
+
 const { t } = useI18n()
+
+defineExpose({
+  t
+})
 </script>
 
 <template>

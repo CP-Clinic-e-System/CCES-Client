@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite'
+import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { join } from 'path'
+import {join} from 'path'
 import Pages from 'vite-plugin-pages'
 import ViteComponents from 'vite-plugin-components'
-import ViteIcons, { ViteIconsResolver } from 'vite-plugin-icons'
+import ViteIcons, {ViteIconsResolver} from 'vite-plugin-icons'
 import Layouts from 'vite-plugin-vue-layouts'
 import WindiCSS from 'vite-plugin-windicss'
 import VueI18n from '@intlify/vite-plugin-vue-i18n'
@@ -11,24 +11,24 @@ import VueI18n from '@intlify/vite-plugin-vue-i18n'
 export default defineConfig({
   resolve: {
     alias: {
-      '~/': `${join(__dirname, 'src')}/`,
-    },
+      '~/': `${join(__dirname, 'src')}/`
+    }
   },
   plugins: [
     vue({
-      include: [/\.vue$/],
+      include: [/\.vue$/]
     }),
     Pages({
-      extensions: ['vue'],
+      extensions: ['vue']
     }),
     ViteComponents({
       extensions: ['vue'],
       globalComponentsDeclaration: true,
       customComponentResolvers: [
         ViteIconsResolver({
-          componentPrefix: '',
-        }),
-      ],
+          componentPrefix: ''
+        })
+      ]
     }),
     ViteIcons(),
     Layouts(),
@@ -36,27 +36,27 @@ export default defineConfig({
     VueI18n({
       runtimeOnly: true,
       compositionOnly: true,
-      include: [join(__dirname, 'locales/**')],
-    }),
+      include: [join(__dirname, 'locales/**')]
+    })
   ],
   server: {
     fs: {
-      strict: true,
-    },
+      strict: true
+    }
   },
   ssgOptions: {
     script: 'async',
-    formatting: 'minify',
+    formatting: 'minify'
   },
   optimizeDeps: {
     include: [
       'vue',
       'vue-router',
-      '@vueuse/core',
+      '@vueuse/core'
     ],
     exclude: [
-      'vue-demi',
-    ],
+      'vue-demi'
+    ]
   },
   build: {
     minify: 'terser',
@@ -79,8 +79,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         preferConst: true,
-        freeze: true,
+        freeze: true
       }
     }
-  },
+  }
 })

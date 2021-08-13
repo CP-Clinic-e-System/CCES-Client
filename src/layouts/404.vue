@@ -1,20 +1,25 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+
 const router = useRouter();
+
+defineExpose({
+  router
+})
 </script>
 
 <template>
   <main class="px-4 py-10 text-center text-teal-700">
     <div>
       <p class="text-4xl">
-        <carbon-warning class="inline-block" />
+        <carbon-warning class="inline-block"/>
       </p>
     </div>
-    <router-view />
+    <router-view/>
     <div>
       <button
-        class="btn m-3 text-sm mt-8"
-        @click="router.back()"
+          class="btn m-3 text-sm mt-8"
+          @click="router.back()"
       >
         Back
       </button>
