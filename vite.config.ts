@@ -2,8 +2,10 @@ import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import {join} from 'path'
 import Pages from 'vite-plugin-pages'
-import ViteComponents from 'vite-plugin-components'
-import ViteIcons, {ViteIconsResolver} from 'vite-plugin-icons'
+import ViteComponents from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
 import Layouts from 'vite-plugin-vue-layouts'
 import WindiCSS from 'vite-plugin-windicss'
 import VueI18n from '@intlify/vite-plugin-vue-i18n'
@@ -23,14 +25,13 @@ export default defineConfig({
     }),
     ViteComponents({
       extensions: ['vue'],
-      globalComponentsDeclaration: true,
-      customComponentResolvers: [
-        ViteIconsResolver({
-          componentPrefix: ''
-        })
+      dts: true,
+      resolvers: [
+        IconsResolver({componentPrefix: 'i'}),
+        ElementPlusResolver()
       ]
     }),
-    ViteIcons(),
+    Icons({compiler: 'vue3'}),
     Layouts(),
     WindiCSS(),
     VueI18n({
