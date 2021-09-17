@@ -8,16 +8,24 @@
   <meta content='width=device-width,initial-scale=1.0,maximum-scale=5.0,minimum-scale=1.0' name='viewport'>
   <meta content='strict-origin-when-cross-origin' name='referrer'>
   <link href='/favicon.ico?v=2' rel='icon'>
-  <title>CCES-Client</title>
+  <title>CCES Client</title>
 </head>
-  <body>
-    <noscript>
-      <strong>
-        We're sorry but CCES-Client doesn't work properly without JavaScript enabled.
-        Please enable it to continue.
-      </strong>
-    </noscript>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<body>
+<noscript>
+  <strong>
+    We're sorry but CCES client doesn't work properly without JavaScript enabled.
+    Please enable it to continue.
+  </strong>
+</noscript>
+<div id="app"></div>
+<script>
+  (function() {
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    const setting = localStorage.getItem('color-schema') || 'auto'
+    if (setting === 'dark' || (prefersDark && setting !== 'light'))
+      document.documentElement.classList.toggle('dark', true)
+  })()
+</script>
+<script type="module" src="/src/main.ts"></script>
+</body>
 </html>

@@ -1,1 +1,10 @@
-not-found: Not found
+title: 醫療院所線上預約掛號系統
+description: 全年無休線上預約掛號平台
+button:
+  about: 關於
+  back: 上一頁
+  go: 確定
+  home: 首頁
+  toggle_dark: 切換深色模式
+  toggle_langs: 切換語言
+not-found: 該頁面不存在

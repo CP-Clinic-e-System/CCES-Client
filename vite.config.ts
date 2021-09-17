@@ -1,63 +1,122 @@
-import {defineConfig} from 'vite'
-import vue from '@vitejs/plugin-vue'
-import {join} from 'path'
+import path from 'path'
+import { defineConfig } from 'vite'
+import Vue from '@vitejs/plugin-vue'
 import Pages from 'vite-plugin-pages'
-import ViteComponents from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import Layouts from 'vite-plugin-vue-layouts'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
-import Layouts from 'vite-plugin-vue-layouts'
+import Components from 'unplugin-vue-components/vite'
+import AutoImport from 'unplugin-auto-import/vite'
+import Markdown from 'vite-plugin-md'
 import WindiCSS from 'vite-plugin-windicss'
 import VueI18n from '@intlify/vite-plugin-vue-i18n'
+import Inspect from 'vite-plugin-inspect'
+import Prism from 'markdown-it-prism'
+import LinkAttributes from 'markdown-it-link-attributes'
+
+const markdownWrapperClasses = 'prose prose-sm m-auto text-left'
 
 export default defineConfig({
   resolve: {
     alias: {
-      '~/': `${join(__dirname, 'src')}/`
-    }
+      '~/': `${path.resolve(__dirname, 'src')}/`,
+    },
   },
   plugins: [
-    vue({
-      include: [/\.vue$/]
+    Vue({
+      include: [/\.vue$/, /\.md$/],
     }),
+
     Pages({
-      extensions: ['vue']
+      extensions: ['vue', 'md'],
     }),
-    ViteComponents({
-      extensions: ['vue'],
-      dts: true,
-      resolvers: [
-        IconsResolver({componentPrefix: 'i'}),
-        ElementPlusResolver()
-      ]
-    }),
-    Icons({compiler: 'vue3'}),
+
     Layouts(),
-    WindiCSS(),
+
+    AutoImport({
+      imports: [
+        'vue',
+        'vue-router',
+        'vue-i18n',
+        '@vueuse/head',
+        '@vueuse/core',
+      ],
+      dts: true,
+    }),
+
+    Components({
+      // allow auto load markdown components under `./src/components/`
+      extensions: ['vue', 'md'],
+
+      dts: true,
+
+      // allow auto import and register components used in markdown
+      include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+
+      // custom resolvers
+      resolvers: [
+        // auto import icons
+        IconsResolver({
+          componentPrefix: '',
+          // enabledCollections: ['carbon']
+        }),
+      ],
+    }),
+
+    Icons(),
+
+    WindiCSS({
+      safelist: markdownWrapperClasses,
+    }),
+
+    Markdown({
+      wrapperClasses: markdownWrapperClasses,
+      headEnabled: true,
+      markdownItSetup(md) {
+        // https://prismjs.com/
+        md.use(Prism)
+        md.use(LinkAttributes, {
+          pattern: /^https?:\/\//,
+          attrs: {
+            target: '_blank',
+            rel: 'noopener',
+          },
+        })
+      },
+    }),
+
     VueI18n({
       runtimeOnly: true,
       compositionOnly: true,
-      include: [join(__dirname, 'locales/**')]
-    })
+      include: [path.resolve(__dirname, 'locales/**')],
+    }),
+
+    Inspect({
+      // change this to enable inspect for debugging
+      enabled: false,
+    }),
   ],
+
   server: {
     fs: {
-      strict: true
-    }
+      strict: true,
+    },
   },
+
   ssgOptions: {
     script: 'async',
-    formatting: 'minify'
+    formatting: 'minify',
   },
+
   optimizeDeps: {
     include: [
       'vue',
       'vue-router',
-      '@vueuse/core'
+      '@vueuse/core',
     ],
     exclude: [
-      'vue-demi'
-    ]
+      'vue-demi',
+    ],
   },
   build: {
     minify: 'terser',
@@ -73,15 +132,15 @@ export default defineConfig({
       compress: true,
       format: {
         preserve_annotations: false,
-        comments: false
-      }
+        comments: false,
+      },
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
       output: {
         preferConst: true,
-        freeze: true
-      }
-    }
-  }
+        freeze: true,
+      },
+    },
+  },
 })

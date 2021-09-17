@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { useHead } from '@vueuse/head'
+const { t } = useI18n()
 useHead({
-  title: 'CCES-Client',
+  title: t('title'),
   meta: [
-    { name: 'description', content: 'CP Chinese Clinic Liff Client Endpoint' }
-  ]
+    { name: 'description', content: t('description') },
+  ],
 })
 </script>
 
 <template>
-  <router-view v-slot='{ Component }'>
-    <component :is='Component' />
-  </router-view>
+  <router-view />
 </template>
