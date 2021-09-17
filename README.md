@@ -1,4 +1,3 @@
-# NTUT Programming Club
+# CCES-Client
 
-### Official Website 2021
-
+## The Client endpoint for user, using LINE Front-end Framework.
